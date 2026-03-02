@@ -30,5 +30,31 @@ async def start(message: types.Message):
 async def channel(message: types.Message):
     await message.reply("انضم للقناة 👇\nhttps://t.me/DealStorm_KSA")
 
+
+# ====== Webhook Settings ======
+
+WEBHOOK_HOST = "https://dealstormksa-bot.onrender.com"
+WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
+WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+
+PORT = int(os.environ.get("PORT", 10000))
+
+
+async def on_startup(dp):
+    await bot.set_webhook(WEBHOOK_URL)
+
+
+async def on_shutdown(dp):
+    await bot.delete_webhook()
+
+
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host="0.0.0.0",
+        port=PORT,
+    )
