@@ -1,3 +1,5 @@
+from handlers.start import register_start
+from admin import register_admin
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.utils import executor
