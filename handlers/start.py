@@ -11,7 +11,7 @@ async def start_command(message: types.Message):
         "🔥 أقوى الصفقات اليومية في السعودية\n"
         "💰 نوفر عليك البحث ونجيب لك الأفضل\n\n"
         "اختر من القائمة 👇",
-        reply_markup=main_keyboard
+        reply_markup=main_keyboard()   # 👈 هنا التعديل
     )
 
 def register_start(dp: Dispatcher):
