@@ -11,7 +11,7 @@ from admin import register_admin
 
 API_TOKEN = os.getenv("BOT_TOKEN")
 
-WEBHOOK_HOST = os.getenv("RENDER_EXTERNAL_URL")
+WEBHOOK_HOST = "https://dealstormksa-bot.onrender.com"
 WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
