@@ -1,8 +1,7 @@
 import logging
 import os
 
-from aiohttp import web
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.utils.executor import start_webhook
 
 from handlers.start import register_start
@@ -11,8 +10,8 @@ from admin import register_admin
 
 API_TOKEN = os.getenv("BOT_TOKEN")
 
-# إعدادات Webhook
-WEBHOOK_HOST = os.getenv("RENDER_EXTERNAL_URL")
+# ضع رابط خدمتك هنا
+WEBHOOK_HOST = "https://dealstormksa-bot.onrender.com"
 WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
@@ -24,7 +23,6 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-# تسجيل الهاندلرز
 register_start(dp)
 register_channel(dp)
 register_admin(dp)
@@ -32,6 +30,7 @@ register_admin(dp)
 
 async def on_startup(dp):
     await bot.set_webhook(WEBHOOK_URL)
+    print("Webhook set to:", WEBHOOK_URL)
 
 
 async def on_shutdown(dp):
