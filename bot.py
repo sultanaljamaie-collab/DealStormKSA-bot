@@ -2,9 +2,7 @@ import logging
 import os
 
 from aiogram import Bot, Dispatcher
-from aiogram.types import Update
-from aiogram.dispatcher.webhook import WebhookRequestHandler
-from aiohttp import web
+from aiogram.utils.executor import start_webhook
 
 from handlers.start import register_start
 from handlers.channel import register_channel
@@ -30,23 +28,21 @@ register_channel(dp)
 register_admin(dp)
 
 
-async def on_startup(app):
+async def on_startup(dp):
     await bot.set_webhook(WEBHOOK_URL)
     print("Webhook set:", WEBHOOK_URL)
 
 
-async def on_shutdown(app):
+async def on_shutdown(dp):
     await bot.delete_webhook()
 
 
-app = web.Application()
-
-# 👇 هذا هو الجزء المهم جداً
-handler = WebhookRequestHandler(dispatcher=dp, bot=bot)
-handler.register(app, path=WEBHOOK_PATH)
-
-app.on_startup.append(on_startup)
-app.on_shutdown.append(on_shutdown)
-
 if __name__ == "__main__":
-    web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        host=WEBAPP_HOST,
+        port=WEBAPP_PORT,
+    )
